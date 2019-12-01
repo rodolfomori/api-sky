@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 class Database {
   constructor() {
@@ -6,10 +6,11 @@ class Database {
   }
 
   mongo() {
-    this.mongoConnection = mongoose.connect("mongodb://localhost:27017/sky", {
+    this.mongoConnection = mongoose.connect('mongodb://localhost:27017/sky', {
       useNewUrlParser: true,
+      useCreateIndex: true,
       useFindAndModify: true,
-      useUnifiedTopology: true // inibir falha
+      useUnifiedTopology: true,
     });
   }
 }
