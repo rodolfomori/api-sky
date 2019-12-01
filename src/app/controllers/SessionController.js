@@ -10,13 +10,13 @@ import User from '../schemas/User';
 
 class SessionController {
   async show(req, res) {
-    const user = await User.findById(req.params.id, (err) => {
+    const user = await User.findById(req.params.id, err => {
       if (err) {
         res.status(400).json({ error: 'User not found' });
       }
     });
 
-    const { name, email, phone, last_login: lastLogin } = user;
+    const { name, email, phone, lastLogin } = user;
 
     const addMin = addMinutes(lastLogin, 30);
 
@@ -59,10 +59,10 @@ class SessionController {
       return res.status(401).send({ error: 'Password does not match' });
     }
 
-    await User.update(
+    await User.updateOne(
       { email },
       { $set: { last_login: new Date() } },
-      { upsert: true },
+      { upsert: true }
     );
 
     const { name, phone, id } = user;

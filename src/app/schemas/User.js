@@ -32,14 +32,14 @@ const UserSchema = new mongoose.Schema(
       number: { type: Number, unique: true, require: true },
     },
 
-    last_login: {
+    lastLogin: {
       type: Date,
       default: Date.now,
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 UserSchema.pre('save', async function save(next) {

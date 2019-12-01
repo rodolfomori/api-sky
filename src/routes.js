@@ -12,6 +12,5 @@ routes.post('/session', SessionController.store);
 routes.use(authMiddlewares);
 
 routes.get('/session/:id', SessionController.show);
-routes.get('/users', UserController.index);
 
 export default routes;

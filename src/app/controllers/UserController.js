@@ -1,15 +1,11 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable class-methods-use-this */
 import * as Yup from 'yup';
 import jwt from 'jsonwebtoken';
 import User from '../schemas/User';
+import authConfig from '../config/auth';
 
 class UserController {
-  async index(req, res) {
-    const users = await User.find({});
-
-    return res.json(users);
-  }
-
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string()
@@ -31,7 +27,7 @@ class UserController {
           ddd: Yup.number()
             .min(4)
             .required(),
-        },
+        }
       ),
     });
 
@@ -68,7 +64,22 @@ class UserController {
       },
     });
 
-    return res.json(user);
+    const { id, createdAt, updatedAt, lastLogin } = user;
+
+    return res.json({
+      name,
+      email,
+      phone: {
+        ddd,
+        number,
+      },
+      createdAt,
+      updatedAt,
+      lastLogin,
+      token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
+      }),
+    });
   }
 }
 
