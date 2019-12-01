@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import authMiddlewares from './app/middlewares/auth';
 
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
@@ -6,9 +7,11 @@ import SessionController from './app/controllers/SessionController';
 const routes = new Router();
 
 routes.post('/users', UserController.store);
-routes.get('/users', UserController.index);
-
 routes.post('/session', SessionController.store);
+
+routes.use(authMiddlewares);
+
 routes.get('/session/:id', SessionController.show);
+routes.get('/users', UserController.index);
 
 export default routes;

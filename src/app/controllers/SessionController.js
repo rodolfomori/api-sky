@@ -1,8 +1,11 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable object-curly-newline */
-import * as Yup from 'yup';
 import bcrypt from 'bcryptjs';
-import { differenceInMinutes, addMinutes, isAfter } from 'date-fns';
+import { addMinutes, differenceInMinutes, isAfter } from 'date-fns';
+import jwt from 'jsonwebtoken';
+import * as Yup from 'yup';
+import authConfig from '../config/auth';
+
 import User from '../schemas/User';
 
 class SessionController {
@@ -72,6 +75,9 @@ class SessionController {
         phone,
         last_login: new Date(),
       },
+      token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
+      }),
     });
   }
 }

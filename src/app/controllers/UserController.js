@@ -1,15 +1,15 @@
+/* eslint-disable class-methods-use-this */
 import * as Yup from 'yup';
+import jwt from 'jsonwebtoken';
 import User from '../schemas/User';
 
 class UserController {
-  // eslint-disable-next-line class-methods-use-this
   async index(req, res) {
     const users = await User.find({});
 
     return res.json(users);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string()
@@ -21,6 +21,18 @@ class UserController {
       password: Yup.string()
         .required()
         .min(6),
+      phone: Yup.object().shape(
+        {
+          number: Yup.number()
+            .min(8)
+            .required(),
+        },
+        {
+          ddd: Yup.number()
+            .min(4)
+            .required(),
+        },
+      ),
     });
 
     if (!(await schema.isValid(req.body))) {
